@@ -117,9 +117,33 @@ class Organization(models.Model):
         return f'<Организация {self.full_name}>'
 
 
+class ModerationReviews(models.Manager):
+    def get_queryset(self):
+        return super().get_queryset().filter(status=True)
+
+
 class Review(models.Model):
 
     CHOICES = [(i, i) for i in range(1, 6)]
+
+    # APPROVED = "1"
+    # REJECTED = "2"
+    # PENDING = "3"
+    #
+    # STATUS_CHOICES = (
+    #     (APPROVED, ("Approved")),
+    #     (PENDING, ("Pending")),
+    #     (REJECTED, ("Rejected")),
+    # )
+    #
+    # review_status = models.CharField(
+    #     ("Review Status"),
+    #     max_length=1,
+    #     choices=STATUS_CHOICES,
+    #     default=PENDING,
+    #     blank=True,
+    #     db_index=True,
+    # )
 
     text = models.CharField(
         'Текст отзыва',
@@ -147,6 +171,13 @@ class Review(models.Model):
         'Дата публикации отзыва',
         auto_now_add=True
     )
+
+    status = models.BooleanField(
+        'Видимость отзыва',
+        default=False
+    )
+
+    objects = ModerationReviews()
 
     class Meta:
         verbose_name = 'Отзыв'

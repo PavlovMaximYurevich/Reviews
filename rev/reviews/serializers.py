@@ -15,7 +15,7 @@ class ReviewSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Review
-        fields = ('id', 'text', 'organization', 'estimation', 'pub_date')
+        fields = ('id', 'text', 'organization', 'estimation', 'pub_date', 'status')
         read_only = ('id',)
 
     def validate(self, data):

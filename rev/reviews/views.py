@@ -1,5 +1,7 @@
+from django.http import Http404
 from django.shortcuts import render, get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, status
+from rest_framework.response import Response
 
 from reviews.models import Organization
 from reviews.serializers import ReviewSerializer, OrganizationSerializer
@@ -8,12 +10,10 @@ from reviews.serializers import ReviewSerializer, OrganizationSerializer
 class ReviewViewSet(viewsets.ModelViewSet):
 
     serializer_class = ReviewSerializer
-
+    http_method_names = ('get', 'put', 'delete', 'post')
     # permission_classes = (
     #     IsAuthorAdminModer,
     # )
-    #
-    # pagination_class = LimitOffsetPagination
 
     def get_organization(self):
         return get_object_or_404(
